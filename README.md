@@ -1,20 +1,32 @@
 # Liquid 2026-09-06 incident: fork transaction replay sets
 
-On 2026-09-06 an Elements range-proof verification-cache bug (commit `c26d719`) was
-exploited to mint L-BTC on Liquid mainnet, splitting the chain at height **4,050,335**.
-Most nodes rejected the exploit block (4,050,336) and stalled at 4,050,335; a minority
-built an 897-block fork to 4,051,232. These files list the transactions on that
-abandoned fork so anyone can watch which ones reappear when the valid chain restarts.
+On 2026-09-06 an Elements range-proof verification-**cache** bug (commit `c26d719`,
+which bound the cache key to asset + scriptPubKey but concatenated the fields with no
+length separators) was exploited to mint L-BTC on Liquid mainnet. The chain split at
+height **4,050,335**: most nodes rejected the exploit block **4,050,336** and stalled,
+while a minority built an 897-block fork to **4,051,232**.
+
+This repo lists every transaction on that abandoned fork so anyone can watch which ones
+reappear ("are replayed") once the valid chain restarts, and independently reproduce the
+fork to confirm these transactions exist only on the invalid chain.
+
+- Halt / last common block: **4,050,335** `aad24e4fb64ca8adf4961667da87820cd48e553957ac64e75de7cdb298b5d66b`
+- Exploit (mint) block: **4,050,336** `e1d9a2aae69e0fc3ca18f7f7f84e0615e92a5e3b5000d66c10c34043346da0d5`
+- Mint tx: `f24a4b179b5cc7e88b25a763911f7cbdf2bf45d1d1b5ab611e94461cef0a183f`
+
+## Contents
+
+- **`expected-replay/<txid>.hex`** — 608 legitimate transactions from the fork, one full
+  raw transaction per file (hex, including witness). We **expect** most of these to be
+  re-mined on the valid chain during recovery. Rebroadcastable with `sendrawtransaction`.
+- **`do-not-expect-replay/<txid>.hex`** — the 8 tainted transactions: the mint and its
+  spend-descendants. These move inflated L-BTC that does not exist on the valid chain, so
+  they can **never** be replayed. If any appears on the valid chain, the inflation was
+  accepted there.
+- `expected-replay.csv`, `do-not-expect-replay.csv`, `replay-sets.json` — the same sets
+  as txid lists with fork heights (and roles for the tainted set).
 
 Match is by **exact txid** appearing on the valid chain **above height 4,050,335**.
-
-## Files
-- `expected-replay.csv` / `.json` — legitimate user transactions mined on the fork. We
-  **expect** most of these to be re-mined on the valid chain during recovery.
-- `do-not-expect-replay.csv` — the mint (`f24a4b17…`) and its spend-descendants. These
-  move inflated L-BTC that does not exist on the valid chain, so they can **never** be
-  replayed. If any ever appears on the valid chain, the inflation was accepted there.
-- `replay-sets.json` — both sets plus metadata.
 
 ## Counts
 | set | count |
@@ -23,9 +35,65 @@ Match is by **exact txid** appearing on the valid chain **above height 4,050,335
 | never replayable (tainted) | 8 |
 | coinbase (excluded — each valid block has its own) | 897 |
 
+## Independently reproduce the affected chain
+
+This is the approach verified to work. **Research / archival only:** a node that does this
+lands on the invalid fork and will not rejoin the real chain on its own (see the last note).
+
+1. Build and run Elements at a commit that includes the vulnerable cache-key commit
+   `c26d719` — e.g. master `c7e856fab1b0c4d37005e25c0940184d812a26a0` (reports
+   `v28.99.0-c7e856fab1b0`). Sync `liquidv1` to the halt tip 4,050,335. Run it **isolated**
+   (`-connect=0 -listen=0`) so it neither adopts a competing honest chain nor propagates
+   the invalid fork.
+
+2. Poison the range-proof cache by pushing block 4,050,335's primer transactions back
+   through the mempool (the only path that inserts into the cache):
+
+       elements-cli invalidateblock aad24e4fb64ca8adf4961667da87820cd48e553957ac64e75de7cdb298b5d66b
+
+   This rewinds to 4,050,334 and re-admits 4,050,335's transactions to the mempool.
+
+3. Reconnect:
+
+       elements-cli reconsiderblock aad24e4fb64ca8adf4961667da87820cd48e553957ac64e75de7cdb298b5d66b
+
+   Block 4,050,336's mint output now computes the same cache key as a primer output,
+   hits the poisoned entry, skips `secp256k1_rangeproof_verify`, and is accepted. The node
+   reorgs onto the fork.
+
+4. On an isolated node (no peers to serve block bodies), feed the fork forward yourself.
+   The raw blocks are large; the raw transactions in this repo are also enough to rebuild
+   the tainted history. If you have the block bodies, `submitblock` heights
+   4,050,337 … 4,051,232 in order, and start with `-validatepegin=0` (peg-in mainchain
+   re-checks otherwise block forward progress; this does not change the resulting
+   chainstate).
+
+**Why this proves the point:** the *same binary* on a cold cache (an ordinary from-disk
+sync) rejects 4,050,336 with `mandatory-script-verify-flag-failed, Range proof verification
+failed`. Acceptance requires the poisoned cache entry, which only mempool acceptance
+(store=true) inserts; block connection never does. So these transactions live only on an
+invalid chain, and the `do-not-expect-replay/` set can never be valid on the real chain.
+
+**Getting back:** once on the fork (tip 4,051,232, the most-work chain) a node will not
+switch back automatically. To rejoin, `invalidateblock 4050336` to drop to 4,050,335, or
+reindex — and even then only once a restarted honest chain out-works the fork.
+
+## Monitor for replay
+
+For each `<txid>.hex`, the filename is the txid. Against a node with `-txindex` on the
+valid chain:
+
+    elements-cli getrawtransaction <txid> true
+
+Treat it as replayed if it returns and its confirming block height is **> 4,050,335**. Or
+scan valid blocks above the halt height and match txids. To help a transaction along, the
+raw hex is provided: `elements-cli sendrawtransaction "$(cat expected-replay/<txid>.hex)"`.
+
 ## Caveats
+
 - Exact-txid only: a transaction re-signed with a different fee gets a new txid and will
   not match, even if economically equivalent.
 - "Expected" is not a guarantee: a user may never rebroadcast, or a conflict may prevent
   re-mining. The list is what to watch, not a prediction each will appear.
-- Fork data source: Esplora block archive of heights 4,050,336–4,051,232.
+- Fork data source: an Esplora raw-block archive of heights 4,050,336–4,051,232; each raw
+  transaction was sliced from its block and its txid round-trip verified.
