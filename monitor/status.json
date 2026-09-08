@@ -1,0 +1,20 @@
+{
+ "scanned_through": 4050335,
+ "replayed": {},
+ "tip_height": 4050335,
+ "tip_hash": "aad24e4fb64ca8adf4961667da87820cd48e553957ac64e75de7cdb298b5d66b",
+ "block_4050336_hash": null,
+ "on_fork": false,
+ "halt_height": 4050335,
+ "grown_past_halt": 0,
+ "replayed_count": 0,
+ "replayed_by_set": {
+  "expected": 0,
+  "tainted": 0
+ },
+ "expected_total": 608,
+ "tainted_total": 8,
+ "tainted_replayed_ALERT": false,
+ "fork_adopted_ALERT": false,
+ "last_change_at": "2026-09-08T18:09:06Z"
+}

@@ -86,6 +86,23 @@ invalid chain, and the `do-not-expect-replay/` set can never be valid on the rea
 switch back automatically. To rejoin, `invalidateblock 4050336` to drop to 4,050,335, or
 reindex — and even then only once a restarted honest chain out-works the fork.
 
+## Automated monitor (GitHub Action)
+
+`.github/workflows/monitor.yml` runs `monitor/check.py` hourly against mempool's
+liquid.network Esplora and records the valid chain's state:
+
+- `monitor/status.json` — current tip height/hash, blocks grown past the halt, how many
+  of each set have been replayed, and two alert flags: `fork_adopted_ALERT` (liquid.network
+  reorged onto the fork) and `tainted_replayed_ALERT` (an inflated tx appeared on the valid
+  chain — should never happen).
+- `monitor/tips-history.csv` — one row each time the state changes.
+
+It only queries liquid.network (mempool's instance), does the expensive per-block replay
+scan only once the chain advances past 4,050,335 on a non-fork chain, and commits back only
+on change, so history stays clean. Enable Actions on the repo and allow workflow write
+access (Settings → Actions → General → Workflow permissions → Read and write). Scheduled
+runs are best-effort and GitHub pauses schedules after 60 days without a commit.
+
 ## Monitor for replay
 
 For each `<txid>.hex`, the filename is the txid. Against a node with `-txindex` on the

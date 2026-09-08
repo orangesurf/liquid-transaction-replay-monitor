@@ -1,0 +1,29 @@
+name: liquid-replay-monitor
+# Polls mempool's liquid.network for the valid chain's state and any fork-tx replays.
+on:
+  schedule:
+    - cron: "17 * * * *"        # hourly (offset from :00 to dodge congestion; runs are best-effort)
+  workflow_dispatch: {}          # allow manual runs
+permissions:
+  contents: write
+concurrency:
+  group: monitor
+  cancel-in-progress: false
+jobs:
+  poll:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Poll liquid.network
+        run: python3 monitor/check.py
+      - name: Commit on change
+        run: |
+          if [ -n "$(git status --porcelain monitor/)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add monitor/
+            git commit -m "monitor: liquid.network update $(date -u +%FT%TZ)"
+            git push
+          else
+            echo "no change; nothing to commit"
+          fi
