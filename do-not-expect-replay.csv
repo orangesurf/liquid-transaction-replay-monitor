@@ -1,0 +1,9 @@
+txid,fork_height,role
+f24a4b179b5cc7e88b25a763911f7cbdf2bf45d1d1b5ab611e94461cef0a183f,4050336,"mint (invalid range proof; inflated L-BTC created here)"
+3875a6d6ed4af708e6fd90d1c5504dc014e52c7093a566987252006d6cf1146b,4050337,"hop (spends inflated coins)"
+c6ea588ac26f5838b6acbb2a444a33b325bbfeb39bf16dfe27b47215ffd72267,4050343,"hop (spends inflated coins)"
+46f117c990580501a5156937a8c8affda551a38b3c0b99d29eb8469ee6beb3d2,4050344,"peg-out 2.65138358 BTC"
+32892440646b3309a71ea5b0f6c87daebcb481f2d2f5434deaea515ef2933814,4050348,"hop (spends inflated coins)"
+731f8fdf0428c8ef5f2dc48d9347e458b101be2430f22ca6e5f376fd42e47d8a,4050349,"peg-out 3.99601658 BTC (0.1% fee)"
+ce4caece413cd9d444ce7ed9f54e5b328b3da5e4af301aff59a3571f76e988f2,4050349,"peg-out 3996.01834922 BTC (the drain)"
+1c68863aeaa991685e7efa62c68eec13ac2f5725c8174bba1e064a3598a23f90,4050422,"peg-out 4.14039061 BTC (service sweep)"
