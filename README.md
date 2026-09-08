@@ -23,7 +23,15 @@ fork to confirm these transactions exist only on the invalid chain.
   spend-descendants. These move inflated L-BTC that does not exist on the valid chain, so
   they can **never** be replayed. If any appears on the valid chain, the inflation was
   accepted there.
-- `expected-replay.csv`, `do-not-expect-replay.csv`, `replay-sets.json` — the same sets
+- **`coinbase/<txid>.hex`** — the 897 per-block coinbase (fee-collection) transactions,
+  one per fork block. Archived for completeness; these are not replay candidates, since
+  every block mints its own coinbase.
+- **`blocks/<height>-<hash>.bin`** — the raw serialized blocks: the 897 fork blocks
+  (4,050,336–4,051,232) plus the valid anchor block 4,050,335. This is the primary source;
+  the raw transactions above are sliced from these. Feed them to a node with `submitblock`.
+- `blocks.csv` — manifest of every block file: `height,hash,time_iso,tx_count,size_bytes,sha256,chain`
+  (`chain` is `fork` or `valid-anchor`). Use the sha256 column to verify integrity.
+- `expected-replay.csv`, `do-not-expect-replay.csv`, `replay-sets.json` — the same tx sets
   as txid lists with fork heights (and roles for the tainted set).
 
 Match is by **exact txid** appearing on the valid chain **above height 4,050,335**.
