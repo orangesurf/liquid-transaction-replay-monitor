@@ -19,9 +19,9 @@ Match is by **exact txid** appearing on the valid chain **above height 4,050,335
 ## Counts
 | set | count |
 |---|---|
-| expected to replay | see `expected-replay.csv` |
+| expected to replay | 608 |
 | never replayable (tainted) | 8 |
-| (coinbase transactions, one per fork block, are excluded — each valid block has its own) |
+| coinbase (excluded — each valid block has its own) | 897 |
 
 ## Caveats
 - Exact-txid only: a transaction re-signed with a different fee gets a new txid and will
