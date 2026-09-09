@@ -13,7 +13,7 @@ jobs:
   poll:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Poll liquid.network
         run: python3 monitor/check.py
       - name: Commit on change
