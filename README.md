@@ -14,6 +14,22 @@ fork to confirm these transactions exist only on the invalid chain.
 - Exploit (mint) block: **4,050,336** `e1d9a2aae69e0fc3ca18f7f7f84e0615e92a5e3b5000d66c10c34043346da0d5`
 - Mint tx: `f24a4b179b5cc7e88b25a763911f7cbdf2bf45d1d1b5ab611e94461cef0a183f`
 
+<!-- MONITOR:START -->
+## Live status — auto-updated
+
+**Valid chain tip:** 4,050,335 · **0 block(s) past the halt** (4,050,335)  
+**Replayed:** 0 / 608 expected · 0 / 8 tainted  
+_Last change: 2026-09-08T18:09:06Z · source: mempool's liquid.network · updated hourly, committed on change._
+
+_No changes recorded yet — the valid chain is paused at 4,050,335._
+
+### Recent changes
+
+| UTC | valid tip | grown | replayed (exp / tainted) | on fork |
+|---|---|---|---|---|
+| 2026-09-08T18:09:06Z | 4,050,335 | 0 | 0 | False |
+<!-- MONITOR:END -->
+
 ## Contents
 
 - **`expected-replay/<txid>.hex`** — 608 legitimate transactions from the fork, one full

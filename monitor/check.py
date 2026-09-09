@@ -19,6 +19,50 @@ def load_set(name):
     p = REPO / name
     return {r["txid"] for r in csv.DictReader(p.open())} if p.exists() else set()
 def now(): return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+def fmt_int(n): return f"{n:,}"
+def render_readme(st):
+    hp = REPO / "monitor" / "tips-history.csv"
+    rows = list(__import__("csv").DictReader(hp.open())) if hp.exists() else []
+    HALT = 4050335
+    tip = st.get("tip_height", HALT); grown = st.get("grown_past_halt", 0)
+    rc = st.get("replayed_by_set", {"expected": 0, "tainted": 0})
+    et = st.get("expected_total", 608); tt = st.get("tainted_total", 8)
+    alert = " ⚠️ TAINTED TX REPLAYED — inflation accepted on the valid chain" if rc.get("tainted") else ""
+    fork = " ⚠️ liquid.network is on the FORK" if st.get("on_fork") else ""
+    lines = ["<!-- MONITOR:START -->", "## Live status — auto-updated", "",
+        f"**Valid chain tip:** {fmt_int(tip)} · **{fmt_int(grown)} block(s) past the halt** (4,050,335){fork}  ",
+        f"**Replayed:** {fmt_int(rc.get('expected',0))} / {fmt_int(et)} expected · {fmt_int(rc.get('tainted',0))} / {fmt_int(tt)} tainted{alert}  ",
+        f"_Last change: {st.get('last_change_at','—')} · source: mempool's liquid.network · updated hourly, committed on change._", ""]
+    if len(rows) >= 2:
+        pts = rows[-40:]
+        xs = " ".join('"' + r["utc"][5:16].replace("T", " ") + '"' for r in pts)
+        ys = " ".join(str(r.get("replayed_count", 0)) for r in pts)
+        gs = " ".join(str(int(r.get("tip_height", HALT)) - HALT) for r in pts)
+        ymax = max(1, max(int(r.get("replayed_count", 0)) for r in pts))
+        gmax = max(1, max(int(r.get("tip_height", HALT)) - HALT for r in pts))
+        lines += ["```mermaid", "xychart-beta",
+                  '    title "Fork transactions replayed on the valid chain"',
+                  f"    x-axis [{xs}]", f'    y-axis "replayed" 0 --> {ymax}', f"    line [{ys}]", "```", "",
+                  "```mermaid", "xychart-beta", '    title "Valid chain blocks past the halt"',
+                  f"    x-axis [{xs}]", f'    y-axis "blocks" 0 --> {gmax}', f"    line [{gs}]", "```", ""]
+    else:
+        lines += ["_No changes recorded yet — the valid chain is paused at 4,050,335._", ""]
+    lines += ["### Recent changes", "",
+              "| UTC | valid tip | grown | replayed (exp / tainted) | on fork |",
+              "|---|---|---|---|---|"]
+    for r in reversed(rows[-15:]):
+        g = int(r.get("tip_height", HALT)) - HALT
+        lines.append(f"| {r['utc']} | {fmt_int(int(r['tip_height']))} | {fmt_int(g)} | {r.get('replayed_count','0')} | {r.get('on_fork','False')} |")
+    if not rows:
+        lines.append("| — | (none yet) | 0 | 0 | False |")
+    lines += ["<!-- MONITOR:END -->"]
+    block = "\n".join(lines)
+    rp = REPO / "README.md"; txt = rp.read_text()
+    import re
+    new = re.sub(r"<!-- MONITOR:START -->.*?<!-- MONITOR:END -->", block, txt, flags=re.S)
+    if new != txt: rp.write_text(new)
+
 def main():
     expected = load_set("expected-replay.csv"); tainted = load_set("do-not-expect-replay.csv")
     st_path = REPO / "monitor" / "status.json"
@@ -61,7 +105,9 @@ def main():
             w = csv.writer(f)
             if new: w.writerow(["utc", "tip_height", "tip_hash", "block_4050336_hash", "on_fork", "replayed_count"])
             w.writerow([now(), tip, tip_hash, h336 or "", on_fork, len(st["replayed"])])
+        render_readme(st)
         print(f"CHANGED tip={tip} on_fork={on_fork} replayed={len(st['replayed'])} (+{newly})")
         return
+    render_readme(st)  # keep README block in sync / seed markers even when status is unchanged
     print(f"no change: tip={tip} on_fork={on_fork} replayed={len(st['replayed'])}")
 if __name__ == "__main__": main()
