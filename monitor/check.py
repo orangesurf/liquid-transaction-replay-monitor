@@ -36,9 +36,9 @@ def render_readme(st):
         f"_Last change: {st.get('last_change_at','—')} · source: mempool's liquid.network · updated hourly, committed on change._", ""]
     if len(rows) >= 2:
         pts = rows[-40:]
-        xs = " ".join('"' + r["utc"][5:16].replace("T", " ") + '"' for r in pts)
-        ys = " ".join(str(r.get("replayed_count", 0)) for r in pts)
-        gs = " ".join(str(int(r.get("tip_height", HALT)) - HALT) for r in pts)
+        xs = ", ".join('"' + r["utc"][5:16] + '"' for r in pts)
+        ys = ", ".join(str(r.get("replayed_count", 0)) for r in pts)
+        gs = ", ".join(str(int(r.get("tip_height", HALT)) - HALT) for r in pts)
         ymax = max(1, max(int(r.get("replayed_count", 0)) for r in pts))
         gmax = max(1, max(int(r.get("tip_height", HALT)) - HALT for r in pts))
         lines += ["```mermaid", "xychart-beta",
