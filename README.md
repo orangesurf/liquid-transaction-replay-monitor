@@ -17,30 +17,31 @@ fork to confirm these transactions exist only on the invalid chain.
 <!-- MONITOR:START -->
 ## Live status — auto-updated
 
-**Valid chain tip:** 4,051,603 · **1,268 block(s) past the halt** (4,050,335)  
+**Valid chain tip:** 4,051,792 · **1,457 block(s) past the halt** (4,050,335)  
 **Replayed:** 608 / 608 expected · 0 / 8 tainted  
-_Last change: 2026-09-10T18:32:54Z · source: mempool's liquid.network · updated hourly, committed on change._
+_Last change: 2026-09-10T21:41:59Z · source: mempool's liquid.network · updated hourly, committed on change._
 
 ```mermaid
 xychart-beta
     title "Fork transactions replayed on the valid chain"
-    x-axis ["09-08T18:09", "09-10T13:30", "09-10T13:34", "09-10T14:29", "09-10T18:32"]
+    x-axis ["09-08T18:09", "09-10T13:30", "09-10T13:34", "09-10T14:29", "09-10T18:32", "09-10T21:41"]
     y-axis "replayed" 0 --> 608
-    line [0, 608, 608, 608, 608]
+    line [0, 608, 608, 608, 608, 608]
 ```
 
 ```mermaid
 xychart-beta
     title "Valid chain blocks past the halt"
-    x-axis ["09-08T18:09", "09-10T13:30", "09-10T13:34", "09-10T14:29", "09-10T18:32"]
-    y-axis "blocks" 0 --> 1268
-    line [0, 957, 972, 1026, 1268]
+    x-axis ["09-08T18:09", "09-10T13:30", "09-10T13:34", "09-10T14:29", "09-10T18:32", "09-10T21:41"]
+    y-axis "blocks" 0 --> 1457
+    line [0, 957, 972, 1026, 1268, 1457]
 ```
 
 ### Recent changes
 
 | UTC | valid tip | grown | replayed (exp / tainted) | on fork |
 |---|---|---|---|---|
+| 2026-09-10T21:41:59Z | 4,051,792 | 1,457 | 608 | False |
 | 2026-09-10T18:32:54Z | 4,051,603 | 1,268 | 608 | False |
 | 2026-09-10T14:29:07Z | 4,051,361 | 1,026 | 608 | False |
 | 2026-09-10T13:34:48Z | 4,051,307 | 972 | 608 | False |
