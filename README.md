@@ -17,16 +17,31 @@ fork to confirm these transactions exist only on the invalid chain.
 <!-- MONITOR:START -->
 ## Live status — auto-updated
 
-**Valid chain tip:** 4,050,335 · **0 block(s) past the halt** (4,050,335)  
-**Replayed:** 0 / 608 expected · 0 / 8 tainted  
-_Last change: 2026-09-08T18:09:06Z · source: mempool's liquid.network · updated hourly, committed on change._
+**Valid chain tip:** 4,051,292 · **957 block(s) past the halt** (4,050,335)  
+**Replayed:** 608 / 608 expected · 0 / 8 tainted  
+_Last change: 2026-09-10T13:30:06Z · source: mempool's liquid.network · updated hourly, committed on change._
 
-_No changes recorded yet — the valid chain is paused at 4,050,335._
+```mermaid
+xychart-beta
+    title "Fork transactions replayed on the valid chain"
+    x-axis ["09-08 18:09" "09-10 13:30"]
+    y-axis "replayed" 0 --> 608
+    line [0 608]
+```
+
+```mermaid
+xychart-beta
+    title "Valid chain blocks past the halt"
+    x-axis ["09-08 18:09" "09-10 13:30"]
+    y-axis "blocks" 0 --> 957
+    line [0 957]
+```
 
 ### Recent changes
 
 | UTC | valid tip | grown | replayed (exp / tainted) | on fork |
 |---|---|---|---|---|
+| 2026-09-10T13:30:06Z | 4,051,292 | 957 | 608 | False |
 | 2026-09-08T18:09:06Z | 4,050,335 | 0 | 0 | False |
 <!-- MONITOR:END -->
 
