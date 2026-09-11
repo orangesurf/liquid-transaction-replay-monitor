@@ -17,30 +17,31 @@ fork to confirm these transactions exist only on the invalid chain.
 <!-- MONITOR:START -->
 ## Live status — auto-updated
 
-**Valid chain tip:** 4,052,518 · **2,183 block(s) past the halt** (4,050,335)  
+**Valid chain tip:** 4,052,800 · **2,465 block(s) past the halt** (4,050,335)  
 **Replayed:** 608 / 608 expected · 0 / 8 tainted  
-_Last change: 2026-09-11T09:48:36Z · source: mempool's liquid.network · updated hourly, committed on change._
+_Last change: 2026-09-11T14:30:46Z · source: mempool's liquid.network · updated hourly, committed on change._
 
 ```mermaid
 xychart-beta
     title "Fork transactions replayed on the valid chain"
-    x-axis ["09-08T18:09", "09-10T13:30", "09-10T13:34", "09-10T14:29", "09-10T18:32", "09-10T21:41", "09-11T00:14", "09-11T04:48", "09-11T09:48"]
+    x-axis ["09-08T18:09", "09-10T13:30", "09-10T13:34", "09-10T14:29", "09-10T18:32", "09-10T21:41", "09-11T00:14", "09-11T04:48", "09-11T09:48", "09-11T14:30"]
     y-axis "replayed" 0 --> 608
-    line [0, 608, 608, 608, 608, 608, 608, 608, 608]
+    line [0, 608, 608, 608, 608, 608, 608, 608, 608, 608]
 ```
 
 ```mermaid
 xychart-beta
     title "Valid chain blocks past the halt"
-    x-axis ["09-08T18:09", "09-10T13:30", "09-10T13:34", "09-10T14:29", "09-10T18:32", "09-10T21:41", "09-11T00:14", "09-11T04:48", "09-11T09:48"]
-    y-axis "blocks" 0 --> 2183
-    line [0, 957, 972, 1026, 1268, 1457, 1610, 1883, 2183]
+    x-axis ["09-08T18:09", "09-10T13:30", "09-10T13:34", "09-10T14:29", "09-10T18:32", "09-10T21:41", "09-11T00:14", "09-11T04:48", "09-11T09:48", "09-11T14:30"]
+    y-axis "blocks" 0 --> 2465
+    line [0, 957, 972, 1026, 1268, 1457, 1610, 1883, 2183, 2465]
 ```
 
 ### Recent changes
 
 | UTC | valid tip | grown | replayed (exp / tainted) | on fork |
 |---|---|---|---|---|
+| 2026-09-11T14:30:46Z | 4,052,800 | 2,465 | 608 | False |
 | 2026-09-11T09:48:36Z | 4,052,518 | 2,183 | 608 | False |
 | 2026-09-11T04:48:17Z | 4,052,218 | 1,883 | 608 | False |
 | 2026-09-11T00:14:12Z | 4,051,945 | 1,610 | 608 | False |
