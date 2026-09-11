@@ -1,5 +1,5 @@
 {
- "scanned_through": 4051792,
+ "scanned_through": 4051945,
  "replayed": {
   "54ea36d3239260ab5e7fd904bea7bfe278a955d97b72731ab5277561dc5cf8eb": 4050337,
   "6632f86295b017892f44b253bfd0918d7b7c4bb3c3218371bca40ddd1a89b342": 4050337,
@@ -610,12 +610,12 @@
   "90ffc92d8ec3379b7f9ff416c368f1e2db06549a82b26d85beb013703d9dd2fd": 4050945,
   "bd7b757ec21e55ccbb0f7e25e5c7556b37cbb693e63d252cabb5f14ac3f46d62": 4050945
  },
- "tip_height": 4051792,
- "tip_hash": "d3192351ac49182bd7ec3df9d518b5f763c126c3e20bd5f7028789391659dab8",
+ "tip_height": 4051945,
+ "tip_hash": "ad80fa19d57b315e163410b9e7ca349a988638af11fa19b7a31fdb17e81183f0",
  "block_4050336_hash": "d4eeaa1122dab906155a803ababb83ceb7afbb4ae102b37014c9093f879fd341",
  "on_fork": false,
  "halt_height": 4050335,
- "grown_past_halt": 1457,
+ "grown_past_halt": 1610,
  "replayed_count": 608,
  "replayed_by_set": {
   "expected": 608,
@@ -625,5 +625,5 @@
  "tainted_total": 8,
  "tainted_replayed_ALERT": false,
  "fork_adopted_ALERT": false,
- "last_change_at": "2026-09-10T21:41:59Z"
+ "last_change_at": "2026-09-11T00:14:12Z"
 }
