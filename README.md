@@ -17,30 +17,31 @@ fork to confirm these transactions exist only on the invalid chain.
 <!-- MONITOR:START -->
 ## Live status — auto-updated
 
-**Valid chain tip:** 4,053,393 · **3,058 block(s) past the halt** (4,050,335)  
+**Valid chain tip:** 4,053,722 · **3,387 block(s) past the halt** (4,050,335)  
 **Replayed:** 608 / 608 expected · 0 / 8 tainted  
-_Last change: 2026-09-12T00:21:20Z · source: mempool's liquid.network · updated hourly, committed on change._
+_Last change: 2026-09-12T05:52:24Z · source: mempool's liquid.network · updated hourly, committed on change._
 
 ```mermaid
 xychart-beta
     title "Fork transactions replayed on the valid chain"
-    x-axis ["09-08T18:09", "09-10T13:30", "09-10T13:34", "09-10T14:29", "09-10T18:32", "09-10T21:41", "09-11T00:14", "09-11T04:48", "09-11T09:48", "09-11T14:30", "09-11T18:37", "09-11T21:45", "09-12T00:21"]
+    x-axis ["09-08T18:09", "09-10T13:30", "09-10T13:34", "09-10T14:29", "09-10T18:32", "09-10T21:41", "09-11T00:14", "09-11T04:48", "09-11T09:48", "09-11T14:30", "09-11T18:37", "09-11T21:45", "09-12T00:21", "09-12T05:52"]
     y-axis "replayed" 0 --> 608
-    line [0, 608, 608, 608, 608, 608, 608, 608, 608, 608, 608, 608, 608]
+    line [0, 608, 608, 608, 608, 608, 608, 608, 608, 608, 608, 608, 608, 608]
 ```
 
 ```mermaid
 xychart-beta
     title "Valid chain blocks past the halt"
-    x-axis ["09-08T18:09", "09-10T13:30", "09-10T13:34", "09-10T14:29", "09-10T18:32", "09-10T21:41", "09-11T00:14", "09-11T04:48", "09-11T09:48", "09-11T14:30", "09-11T18:37", "09-11T21:45", "09-12T00:21"]
-    y-axis "blocks" 0 --> 3058
-    line [0, 957, 972, 1026, 1268, 1457, 1610, 1883, 2183, 2465, 2713, 2902, 3058]
+    x-axis ["09-08T18:09", "09-10T13:30", "09-10T13:34", "09-10T14:29", "09-10T18:32", "09-10T21:41", "09-11T00:14", "09-11T04:48", "09-11T09:48", "09-11T14:30", "09-11T18:37", "09-11T21:45", "09-12T00:21", "09-12T05:52"]
+    y-axis "blocks" 0 --> 3387
+    line [0, 957, 972, 1026, 1268, 1457, 1610, 1883, 2183, 2465, 2713, 2902, 3058, 3387]
 ```
 
 ### Recent changes
 
 | UTC | valid tip | grown | replayed (exp / tainted) | on fork |
 |---|---|---|---|---|
+| 2026-09-12T05:52:24Z | 4,053,722 | 3,387 | 608 | False |
 | 2026-09-12T00:21:20Z | 4,053,393 | 3,058 | 608 | False |
 | 2026-09-11T21:45:52Z | 4,053,237 | 2,902 | 608 | False |
 | 2026-09-11T18:37:16Z | 4,053,048 | 2,713 | 608 | False |
